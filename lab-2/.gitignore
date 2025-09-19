@@ -1,0 +1,6 @@
+node_modules
+package-lock.json
+package.json
+main.js
+file.txt
+node_modules/
