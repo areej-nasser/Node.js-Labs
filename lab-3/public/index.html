@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+        margin: 20px;
+      }
+      ul {
+        list-style: none;
+        padding: 0px;
+      }
+      li {
+        margin: 5px 0px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      button {
+        background: navy;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>TODO LIST</h1>
+
+    <!-- <form id="todo-form">
+      <input
+        type="text"
+        id="todo-input"
+        required
+        placeholder="Enter a todo..."
+      />
+      <button type="submit">Add</button>
+    </form> -->
+    <ul id="todo-list"></ul>
+    <script>
+      const apibase = "/api/todos";
+      const todolist = document.getElementById("todo-list");
+      //   const todoform = document.getElementById("todo-form");
+      //   const todoinput = document.getElementById("todo-input");
+
+      async function loadTodos() {
+        todolist.innerHTML = "";
+        const res = await fetch(apibase);
+        const data = await res.json();
+
+        data.items.forEach((todo) => {
+          const li = document.createElement("li");
+          li.textContent = todo.title + (todo.cmpleted ? "(completed)" : "");
+
+          const delbtn = document.createElement("button");
+          delbtn.textContent = "Delete";
+          delbtn.onclick = async () => {
+            await fetch(`${apibase}/${todo.id}`, { method: "Delete" });
+            loadTodos();
+          };
+
+          li.appendChild(delbtn);
+          todolist.appendChild(li);
+        });
+      }
+
+      // todoform.addEventListener("submit", async(e)=>{
+      //   e.preventDefault();
+      //   const title = todoinput.value.trim();
+      //     if(!title)return;
+
+      //     await fetch(apibase,{
+
+      //     })
+      // })
+      loadTodos();
+    </script>
+  </body>
+</html>
